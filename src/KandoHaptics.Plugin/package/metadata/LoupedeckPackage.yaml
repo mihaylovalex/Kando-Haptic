@@ -1,0 +1,22 @@
+# Kando Haptics — Logi Actions SDK plugin package configuration.
+type: plugin4
+name: KandoHaptics
+displayName: Kando Haptics
+description: Subtle haptic feedback on Logitech MX Master 4 for Kando pie menu interactions (open, hover, submenu, select).
+pluginFileName: KandoHapticsPlugin.dll
+version: 1.0.0
+author: Kando Haptics contributors
+copyright: Copyright (c) 2026 Kando Haptics contributors
+
+# Windows only: the plugin reads %APPDATA%\kando\ipc-info.json.
+pluginFolderWin: bin
+
+pluginCapabilities:
+    # Enables haptic feedback via events/extra/eventMapping.yaml.
+    - HasHapticMapping
+
+# Logi Plugin Service 6.x runs plugins on .NET 10 (see LogiPluginService.deps.json).
+minimumLoupedeckVersion: 6.0
+
+license: MIT
+licenseUrl: https://opensource.org/licenses/MIT

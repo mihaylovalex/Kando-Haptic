@@ -1,0 +1,52 @@
+# Default event source of Kando Haptics.
+# One pre-registered event per official Logitech waveform. The plugin raises
+# waveform_<name> chosen from settings.json, so effects can be changed without
+# rebuilding the plugin (see docs/CONFIGURATION.md).
+displayName: Kando Haptics
+description: Haptic feedback for Kando pie menu interactions
+events:
+    - name: waveform_sharp_state_change
+      displayName: Sharp State Change
+      description: Short, high-intensity pulse for discrete state transitions
+    - name: waveform_damp_state_change
+      displayName: Damp State Change
+      description: Gradual intensity change for smooth state transitions
+    - name: waveform_sharp_collision
+      displayName: Sharp Collision
+      description: High-intensity impact
+    - name: waveform_damp_collision
+      displayName: Damp Collision
+      description: Medium-intensity impact with gradual decay
+    - name: waveform_subtle_collision
+      displayName: Subtle Collision
+      description: Low-intensity light contact
+    - name: waveform_happy_alert
+      displayName: Happy Alert
+      description: Positive feedback pattern
+    - name: waveform_angry_alert
+      displayName: Angry Alert
+      description: Attention-grabbing pattern
+    - name: waveform_completed
+      displayName: Completed
+      description: Confirmation pattern for task completion
+    - name: waveform_square
+      displayName: Square
+      description: Sharp-edged waveform
+    - name: waveform_wave
+      displayName: Wave
+      description: Smooth sinusoidal pattern
+    - name: waveform_firework
+      displayName: Firework
+      description: Multi-burst pattern
+    - name: waveform_mad
+      displayName: Mad
+      description: High-frequency chaotic pattern
+    - name: waveform_knock
+      displayName: Knock
+      description: Repetitive impact pattern
+    - name: waveform_jingle
+      displayName: Jingle
+      description: Musical-style pattern
+    - name: waveform_ringing
+      displayName: Ringing
+      description: Continuous oscillating pattern

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Ядро Kando Haptics: IPC-клиент Kando, обработка взаимодействий, тактильный движок,
+    настройки и логирование. Не зависит от PluginApi.dll, поэтому полностью тестируется
+    без Logi Plugin Service и без подключённой мыши.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>KandoHaptics</RootNamespace>
+    <AssemblyName>KandoHaptics.Core</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="KandoHaptics.Tests" />
+  </ItemGroup>
+
+</Project>

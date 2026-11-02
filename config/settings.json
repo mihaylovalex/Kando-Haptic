@@ -1,0 +1,52 @@
+{
+  "enabled": true,
+  "navigationCooldownMs": 70,
+  "navigationDebounceMs": 100,
+  "transitionGuardMs": 90,
+  "trailingHoverFeedback": true,
+  "logLevel": "Info",
+  "events": {
+    "openMenu": {
+      "enabled": true,
+      "waveform": "damp_state_change"
+    },
+    "hoverButton": {
+      "enabled": true,
+      "waveform": "subtle_collision"
+    },
+    "hoverSubmenu": {
+      "enabled": true,
+      "waveform": "subtle_collision"
+    },
+    "openSubmenu": {
+      "enabled": true,
+      "waveform": "sharp_state_change"
+    },
+    "closeSubmenu": {
+      "enabled": true,
+      "waveform": "damp_collision"
+    },
+    "selectButton": {
+      "enabled": true,
+      "waveform": "completed"
+    },
+    "hoverCenter": {
+      "enabled": false
+    },
+    "hoverParent": {
+      "enabled": false
+    },
+    "activateMenu": {
+      "enabled": false
+    },
+    "closeMenu": {
+      "enabled": false
+    },
+    "scrollUp": {
+      "enabled": false
+    },
+    "scrollDown": {
+      "enabled": false
+    }
+  }
+}

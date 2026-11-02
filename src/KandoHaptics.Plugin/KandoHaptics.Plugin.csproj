@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Плагин Logi Actions SDK. Схема сборки повторяет официальный пример
+    Logitech/actions-sdk/HapticsPlugin: net10.0, ссылка на PluginApi.dll из
+    установленного Logi Plugin Service (Private=false), файлы package/ копируются
+    рядом с bin/, чтобы каталог artifacts/plugin/<Configuration>/ можно было
+    упаковать в .lplug4 командой "logiplugintool pack".
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Loupedeck.KandoHapticsPlugin</RootNamespace>
+    <AssemblyName>KandoHapticsPlugin</AssemblyName>
+    <Version>1.0.0</Version>
+
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <PluginApiDir Condition="'$(PluginApiDir)' == '' and '$(LOGI_PLUGIN_API_DIR)' != ''">$(LOGI_PLUGIN_API_DIR)\</PluginApiDir>
+    <PluginApiDir Condition="'$(PluginApiDir)' == '' and $(OS) == 'Windows_NT'">C:\Program Files\Logi\LogiPluginService\</PluginApiDir>
+    <PluginApiDir Condition="'$(PluginApiDir)' == '' and $(OS) != 'Windows_NT'">/Applications/Utilities/LogiPluginService.app/Contents/MonoBundle/</PluginApiDir>
+
+    <PluginDir Condition="$(OS) == 'Windows_NT'">$(LocalAppData)\Logi\LogiPluginService\Plugins\</PluginDir>
+    <PluginShortName>KandoHaptics</PluginShortName>
+
+    <BaseOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\artifacts\plugin\'))</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)\bin\</OutputPath>
+    <PluginPackageDir>$(BaseOutputPath)$(Configuration)\</PluginPackageDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PluginApi">
+      <HintPath>$(PluginApiDir)PluginApi.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KandoHaptics.Core\KandoHaptics.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="package\**" />
+    <PackageFiles Include="package\**\*" />
+  </ItemGroup>
+
+  <Target Name="CheckPluginApi" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(PluginApiDir)PluginApi.dll')"
+           Text="PluginApi.dll не найден в '$(PluginApiDir)'. Установите Logi Options+ (Logi Plugin Service) или задайте переменную LOGI_PLUGIN_API_DIR." />
+  </Target>
+
+  <Target Name="CopyPackage" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(PluginPackageDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Message Text="Kando Haptics: файлы пакета скопированы в $(PluginPackageDir)" Importance="High" />
+  </Target>
+
+  <!--
+    Режим разработчика (как в официальном шаблоне): dotnet build -p:KandoDevLink=true
+    создаёт .link-файл в каталоге плагинов Logi и просит сервис перезагрузить плагин.
+    По умолчанию выключен, чтобы сборка не подменяла установленный из .lplug4 плагин.
+  -->
+  <Target Name="DevLink" AfterTargets="CopyPackage" Condition="'$(KandoDevLink)' == 'true' and $(OS) == 'Windows_NT'">
+    <Exec Command="echo $(PluginPackageDir)&gt; &quot;$(PluginDir)$(PluginShortName).link&quot;" />
+    <Exec Command="start loupedeck:plugin/$(PluginShortName)/reload" ContinueOnError="true" />
+    <Message Text="Kando Haptics: создан $(PluginDir)$(PluginShortName).link" Importance="High" />
+  </Target>
+
+  <Target Name="PluginClean" AfterTargets="CoreClean">
+    <RemoveDir Directories="$(PluginPackageDir)" />
+  </Target>
+
+</Project>

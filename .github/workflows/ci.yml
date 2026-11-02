@@ -1,0 +1,22 @@
+# Builds the SDK-independent core and runs the test suite.
+# The plugin project itself needs PluginApi.dll from an installed Logi Options+,
+# which is not available on GitHub runners, so it is built locally with build/build.ps1.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test
+        run: dotnet test tests/KandoHaptics.Tests/KandoHaptics.Tests.csproj -c Release --nologo

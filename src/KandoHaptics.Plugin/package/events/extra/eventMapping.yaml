@@ -1,0 +1,49 @@
+# Waveform mapping for the events declared in ../DefaultEventSource.yaml.
+# Every event plays the waveform it is named after. Which event is raised for
+# which Kando interaction is configured in %LOCALAPPDATA%\KandoHaptics\settings.json.
+haptics:
+    waveform_sharp_state_change:
+        DEFAULT: sharp_state_change
+        MX Master 4: sharp_state_change
+    waveform_damp_state_change:
+        DEFAULT: damp_state_change
+        MX Master 4: damp_state_change
+    waveform_sharp_collision:
+        DEFAULT: sharp_collision
+        MX Master 4: sharp_collision
+    waveform_damp_collision:
+        DEFAULT: damp_collision
+        MX Master 4: damp_collision
+    waveform_subtle_collision:
+        DEFAULT: subtle_collision
+        MX Master 4: subtle_collision
+    waveform_happy_alert:
+        DEFAULT: happy_alert
+        MX Master 4: happy_alert
+    waveform_angry_alert:
+        DEFAULT: angry_alert
+        MX Master 4: angry_alert
+    waveform_completed:
+        DEFAULT: completed
+        MX Master 4: completed
+    waveform_square:
+        DEFAULT: square
+        MX Master 4: square
+    waveform_wave:
+        DEFAULT: wave
+        MX Master 4: wave
+    waveform_firework:
+        DEFAULT: firework
+        MX Master 4: firework
+    waveform_mad:
+        DEFAULT: mad
+        MX Master 4: mad
+    waveform_knock:
+        DEFAULT: knock
+        MX Master 4: knock
+    waveform_jingle:
+        DEFAULT: jingle
+        MX Master 4: jingle
+    waveform_ringing:
+        DEFAULT: ringing
+        MX Master 4: ringing
