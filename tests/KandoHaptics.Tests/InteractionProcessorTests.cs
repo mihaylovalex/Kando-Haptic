@@ -1,4 +1,4 @@
-namespace KandoHaptics.Tests;
+﻿namespace KandoHaptics.Tests;
 
 using KandoHaptics.Configuration;
 using KandoHaptics.Haptics;
@@ -281,6 +281,22 @@ public sealed class InteractionProcessorTests : IDisposable
         Assert.False(this._processor.HasPendingHover);
     }
 
+    [Fact]
+    public void LateEventsAfterCloseMenuAreIgnoredUntilNextOpenMenu()
+    {
+        this.OpenMenu();
+        this.Send(KandoInteraction.CloseMenu);
+
+        Assert.Equal(InteractionOutcome.Ignored, this.Send(KandoInteraction.HoverButton, 2));
+        Assert.Equal(InteractionOutcome.Ignored, this.Send(KandoInteraction.HoverSubmenu, 2));
+        Assert.Equal(InteractionOutcome.Ignored, this.Send(KandoInteraction.SelectButton, 2));
+        Assert.False(this._processor.IsMenuOpen);
+        Assert.Equal(0, this._provider.Count);
+
+        this.OpenMenu();
+        Assert.Equal(InteractionOutcome.Played, this.Send(KandoInteraction.HoverButton, 2));
+        Assert.Equal(1, this._provider.Count);
+    }
     [Fact]
     public void PendingHoverDoesNotLeakIntoClosedMenu()
     {

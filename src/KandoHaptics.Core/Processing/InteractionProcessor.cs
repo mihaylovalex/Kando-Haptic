@@ -1,4 +1,4 @@
-namespace KandoHaptics.Processing;
+﻿namespace KandoHaptics.Processing;
 
 using KandoHaptics.Configuration;
 using KandoHaptics.Haptics;
@@ -58,7 +58,7 @@ public sealed class InteractionProcessor : IDisposable
     private readonly ITimer _trailingTimer;
     private PendingHover? _pending;
     private bool _disposed;
-
+    private bool _awaitingOpenMenu;
     public InteractionProcessor(Func<EffectiveSettings> settings, HapticEngine engine, IKandoLogger log, TimeProvider? time = null)
     {
         this._settings = settings;
@@ -160,11 +160,18 @@ public sealed class InteractionProcessor : IDisposable
 
     private InteractionOutcome ProcessLocked(MenuInteractionEvent e, EffectiveSettings settings)
     {
+        // Ignore delayed events after closeMenu until the next openMenu.
+        if (this._awaitingOpenMenu && e.Interaction != KandoInteraction.OpenMenu)
+        {
+            return InteractionOutcome.Ignored;
+        }
+
         switch (e.Interaction)
         {
             case KandoInteraction.OpenMenu:
                 // Новый сеанс: история наведения предыдущего меню забывается.
                 this.CancelPending();
+                this._awaitingOpenMenu = false;
                 this._state.BeginSession();
                 return this.Emit(e, settings, bypassGuard: true);
 
@@ -173,6 +180,7 @@ public sealed class InteractionProcessor : IDisposable
                 this.CancelPending();
                 var outcome = this._state.IsOpen ? this.Emit(e, settings) : InteractionOutcome.Duplicate;
                 this._state.Clear();
+                this._awaitingOpenMenu = true;
                 return outcome;
             }
 
